@@ -1,5 +1,5 @@
 function App() {
-  return <div>Bonjour Kids 🇫🇷</div>
+  return <div>French Academy Kids 🇫🇷</div>
 }
 
 export default App

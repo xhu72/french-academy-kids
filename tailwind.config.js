@@ -1,4 +1,15 @@
 /** @type {import('tailwindcss').Config} */
+
+/**
+ * CSS Property           Tailwind Prefix
+ * --------------------------------------
+ * background-color       bg-
+ * color                  text-
+ * border-color           border-
+ * font-family            font-
+ * box-shadow             shadow-
+ * border-radius          rounded-
+ */
 export default {
   content: [
     "./index.html",
