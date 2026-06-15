@@ -9,7 +9,13 @@
  * font-family            font-
  * box-shadow             shadow-
  * border-radius          rounded-
+ * height                 h-
+ * min-height             min-h-
+ * max-height             max-h-
+ * width                  w-
+ * min-width              min-w-
  */
+
 export default {
   content: [
     "./index.html",
