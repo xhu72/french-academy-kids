@@ -3,11 +3,7 @@ import { AuthProvider } from './context/AuthContext'
 import PrivateRoute from './components/PrivateRoute'
 import LoginPage  from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage'
-
-// Placeholder 
-function HomePage() {
-  return <div className="p-8 text-2xl">🏠 Home</div>
-}
+import HomePage   from './pages/HomePage'
 
 export default function App() {
   return (
