@@ -85,7 +85,8 @@
                     ],
         "answer":  "horse",
         "points":  10,
-        "english":  "horse"
+        "english":  "horse",
+        "image":  "🐴"
     },
     {
         "id":  "L1-AN-06",
@@ -101,7 +102,8 @@
                     ],
         "answer":  "cow",
         "points":  10,
-        "english":  "cow"
+        "english":  "cow",
+        "image":  "🐄"
     },
     {
         "id":  "L1-AN-07",
@@ -135,7 +137,8 @@
                     ],
         "answer":  "le poisson",
         "points":  10,
-        "english":  "fish"
+        "english":  "fish",
+        "image":  "🐟"
     },
     {
         "id":  "L1-AN-09",
@@ -169,7 +172,8 @@
                     ],
         "answer":  "tiger",
         "points":  10,
-        "english":  "tiger"
+        "english":  "tiger",
+        "image":  "🐯"
     },
     {
         "id":  "L1-CO-01",

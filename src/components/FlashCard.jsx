@@ -32,7 +32,7 @@ export default function FlashCard({ question, levelColor }) {
           }}
           className="rounded p-8 flex flex-col items-center justify-center min-h-64 w-full"
         >
-          {question.image && (
+          {question.image && !question.question.includes('in English?') && (
             <div className="text-6xl mb-4 select-none">{question.image}</div>
           )}
           <p className="font-semibold text-center mb-3">{question.question}</p>
@@ -52,10 +52,11 @@ export default function FlashCard({ question, levelColor }) {
           }}
           className="rounded p-8 flex flex-col items-center justify-center min-h-64 w-full"
         >
+          {question.image && (
+            <div className="text-6xl mb-4 select-none">{question.image}</div>
+          )}
           <p className="text-4xl font-bold text-center mb-2 select-none">{question.answer}</p>
-          <p className="text-center mb-4 text-gray-600">
-            {question.english || question.image}
-          </p>
+
           {question.hint && (
             <div className="rounded px-3 py-2 text-sm text-center bg-white text-gray-700">
               💡 {question.hint}
