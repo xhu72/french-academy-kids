@@ -7,6 +7,8 @@ import HomePage           from './pages/HomePage'
 import TopicSelectPage    from './pages/TopicSelectPage'
 import LessonPage         from './pages/LessonPage'
 import LessonCompletePage from './pages/LessonCompletePage'
+import PhrasesPage            from './pages/PhrasesPage'
+import SentenceBuilderPage    from './pages/SentenceBuilderPage'
 
 export default function App() {
   return (
@@ -34,6 +36,13 @@ export default function App() {
           <PrivateRoute><LessonCompletePage /></PrivateRoute>
         } />
 
+        <Route path="/phrases/:levelId" element={
+          <PrivateRoute><PhrasesPage /></PrivateRoute>
+        } />
+        <Route path="/sentence-builder/:levelId" element={
+          <PrivateRoute><SentenceBuilderPage /></PrivateRoute>
+        } />
+        
         {/* Fallback */}
         <Route path="*" element={<Navigate to="/login" replace />} />
 
