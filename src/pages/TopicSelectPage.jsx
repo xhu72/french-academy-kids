@@ -13,7 +13,12 @@ export default function TopicSelectPage() {
   const { user } = useAuth()
 
   const level = LEVELS.find(l => l.id === Number(levelId))
-
+  const hasPhrases = questions.some(
+    q => q.level === Number(levelId) && q.type === 'fill-in-blank'
+  )
+  const hasSentenceBuilder = questions.some(
+    q => q.level === Number(levelId) && q.type === 'sentence-build'
+  )
   const [progress, setProgress] = useState({}) 
   const [loading,  setLoading] = useState(true)
 
@@ -61,13 +66,41 @@ export default function TopicSelectPage() {
             ← 
           </button>
           <div>
-            <h1 className="font-bold">Level {level.id} — {level.name}</h1>
+            <h1 className="font-bold">Level {level.id} - {level.name}</h1>
             <p className="text-sm text-gray-500">{level.grades} · {level.points}</p>
           </div>
         </div>
       </div>
 
       <div className="max-w-2xl mx-auto px-6 py-8">
+
+        {(hasPhrases || hasSentenceBuilder) && (
+        <div className="grid grid-cols-2 gap-3 mb-8">
+          {hasPhrases && (
+            <button
+              onClick={() => navigate(`/phrases/${levelId}`)}
+              className="text-left rounded p-4 w-full"
+              style={{ background: color.bg, border: `1px solid ${color.border}` }}
+            >
+              <div className="text-3xl mb-2">💬</div>
+              <p className="font-bold text-sm mb-1">Practise phrases</p>
+              <p className="text-xs text-gray-600">Fill-in-the-blank</p>
+            </button>
+          )}
+
+          {hasSentenceBuilder && (
+            <button
+              onClick={() => navigate(`/sentence-builder/${levelId}`)}
+              className="text-left rounded p-4 w-full"
+              style={{ background: color.bg, border: `1px solid ${color.border}` }}
+            >
+              <div className="text-3xl mb-2">🧩</div>
+              <p className="font-bold text-sm mb-1">Build sentences</p>
+              <p className="text-xs text-gray-600">Word tile puzzle</p>
+            </button>
+          )}
+        </div>
+        )}
 
         <div className="mb-6">
           <h2 className="text-2xl font-bold">Choose a topic</h2>
@@ -78,7 +111,7 @@ export default function TopicSelectPage() {
             </p>
           )}
         </div>
-
+        
         {loading ? (
           <p className="text-gray-500">Loading...</p>
         ) : (

@@ -2,7 +2,7 @@ export const LEVELS = [
   {
     id:       1,
     name:     'Débutant',
-    grades:   'Grades 1–3',
+    grades:   'Grades 1-3',
     points:   '10 pts per question',
     passMark: 70,
     topics:   ['Animals','Colours','Numbers','Food','Family','Body parts'],
@@ -19,7 +19,7 @@ export const LEVELS = [
   {
     id:       2,
     name:     'Élémentaire',
-    grades:   'Grades 4–6',
+    grades:   'Grades 4-6',
     points:   '20 pts per question',
     passMark: 70,
     topics:   ['Greetings','Numbers','Clothes','School','Weather','Transport'],
@@ -36,7 +36,7 @@ export const LEVELS = [
   {
     id:       3,
     name:     'Intermédiaire',
-    grades:   'Grades 7–9',
+    grades:   'Grades 7-9',
     points:   '30 pts per question',
     passMark: 75,
     topics:   ['Emotions','Nature','Directions','Daily routines','Present tense verbs','Adjectives'],
@@ -53,7 +53,7 @@ export const LEVELS = [
   {
     id:       4,
     name:     'Avancé',
-    grades:   'Grades 10–12',
+    grades:   'Grades 10-12',
     points:   '50 pts per question',
     passMark: 80,
     topics:   ['Past tense','Future tense','Conditional','Formal writing','Idioms','Reading comprehension'],
