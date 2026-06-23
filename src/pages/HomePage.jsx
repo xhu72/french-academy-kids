@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
-import { doc, getDoc, collection, getDocs } from 'firebase/firestore'
 import { signOut } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
-import { auth, db } from '../firebaseConfig'
+import { auth } from '../firebaseConfig'
 import { useAuth } from '../context/AuthContext'
 import { LEVELS } from '../data/levels'
 import LevelCard from '../components/LevelCard'
+import { getUserDoc, getUserProgress, saveQuizResult } from '../services/progressService'
 
 export default function HomePage() {
   const { user } = useAuth()
@@ -19,23 +19,20 @@ export default function HomePage() {
     if (!user) return
 
     async function load() {
-      // Load user document
-      const userSnap = await getDoc(doc(db, 'users', user.uid))
-      if (userSnap.exists()) setUserData(userSnap.data())
+      const userDoc = await getUserDoc(user.uid)
+      if (userDoc) setUserData(userDoc)
 
-      // Load progress subcollection
-      const progressSnap = await getDocs(
-        collection(db, 'users', user.uid, 'progress')
-      )
-      const progressMap = {}
-      progressSnap.forEach(d => {
-        progressMap[d.id] = d.data()
-      })
+      const progressMap = await getUserProgress(user.uid)
       setProgress(progressMap)
       setLoading(false)
     }
 
     load()
+  }, [user])
+
+  useEffect(() => {
+    if (!user) return
+    window.testSave = () => saveQuizResult(user.uid, 'Animals', { score: 80, maxScore: 100, percentage: 80 })
   }, [user])
 
   async function handleSignOut() {

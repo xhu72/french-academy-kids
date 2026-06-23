@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { collection, getDocs } from 'firebase/firestore'
-import { db } from '../firebaseConfig'
 import { useAuth } from '../context/AuthContext'
 import { LEVELS } from '../data/levels'
 import questions from '../data/questions.json'
 import TopicCard from '../components/TopicCard'
+import { getUserProgress } from '../services/progressService'
 
 export default function TopicSelectPage() {
   const { levelId } = useParams()
@@ -26,11 +25,7 @@ export default function TopicSelectPage() {
     if (!user) return
 
     async function load() {
-      const snap = await getDocs(
-        collection(db, 'users', user.uid, 'progress')
-      )
-      const map = {}
-      snap.forEach(d => { map[d.id] = d.data() })
+      const map = await getUserProgress(user.uid)
       setProgress(map)
       setLoading(false)
     }
