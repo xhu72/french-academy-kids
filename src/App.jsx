@@ -9,6 +9,8 @@ import LessonPage         from './pages/LessonPage'
 import LessonCompletePage from './pages/LessonCompletePage'
 import PhrasesPage            from './pages/PhrasesPage'
 import SentenceBuilderPage    from './pages/SentenceBuilderPage'
+import QuizPage from './pages/QuizPage'
+import ResultsPage from './pages/ResultsPage'
 
 export default function App() {
   return (
@@ -41,6 +43,14 @@ export default function App() {
         } />
         <Route path="/sentence-builder/:levelId" element={
           <PrivateRoute><SentenceBuilderPage /></PrivateRoute>
+        } />
+
+        <Route path="/quiz/:levelId/:topic" element={
+          <PrivateRoute><QuizPage /></PrivateRoute>
+        } />
+
+        <Route path="/results/:levelId/:topic" element={
+          <PrivateRoute><ResultsPage /></PrivateRoute>
         } />
         
         {/* Fallback */}
