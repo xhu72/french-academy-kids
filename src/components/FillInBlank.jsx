@@ -45,7 +45,7 @@ export default function FillInBlank({ question, level, onNext }) {
   return (
     <>
       <div
-        className="rounded-xl p-6 text-center"
+        className="rounded p-6 text-center"
         style={{ background: level.color.bg, border: `2px solid ${level.color.border}` }}
       >
         <p className="font-semibold" style={{ color: level.color.title }}>

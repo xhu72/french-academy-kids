@@ -1,8 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { LEVELS } from '../data/levels'
 import questions from '../data/questions.json'
 import { shuffleArray } from '../utils/shuffle'
+import MultipleChoiceCard from '../components/MultipleChoiceCard'
+import PictureMatchCard   from '../components/PictureMatchCard'
 
 export default function QuizPage() {
   const { levelId, topic } = useParams()
@@ -15,6 +17,12 @@ export default function QuizPage() {
   const [score, setScore] = useState(0)
   const [maxScore, setMaxScore] = useState(0)
   const [answers, setAnswers] = useState([])
+  const [selectedOption, setSelectedOption] = useState(null)
+  const [isAnswered, setIsAnswered]         = useState(false)
+  useEffect(() => {
+    setSelectedOption(null)
+    setIsAnswered(false)
+  }, [currentIndex])
 
   const filtered = questions.filter(
     q => q.level === Number(levelId) && q.topic === topicName
@@ -37,6 +45,17 @@ export default function QuizPage() {
         </div>
       </div>
     )
+  }
+
+  function handleSelectOption(option) {
+    if (isAnswered) return
+    setSelectedOption(option)
+    setIsAnswered(true)
+
+    const isCorrect = option === question.answer
+    const pointsEarned = isCorrect ? question.points : 0
+
+    handleAnswer(isCorrect, pointsEarned)
   }
 
   function handleAnswer(isCorrect, pointsEarned) {
@@ -88,17 +107,35 @@ export default function QuizPage() {
           Question {currentIndex + 1} of {total}
         </p>
 
-        <div className="rounded border p-4 text-center space-y-3">
-          <p className="text-xs text-gray-500">Type: {question.type}</p>
-          <p className="font-semibold">{question.question}</p>
-          <button
-            onClick={() => handleAnswer(true, question.points)}
-            className="px-4 py-2 rounded font-bold text-sm text-white mr-2"
-            style={{ background: '#22C55E' }}
-          >
-            Mark correct (test)
-          </button>
-        </div>
+        {question.type === 'multiple-choice' && (
+          <MultipleChoiceCard
+            key={currentIndex}
+            question={question}
+            levelColor={level.color}
+            selectedOption={selectedOption}
+            isAnswered={isAnswered}
+            onSelect={handleSelectOption}
+          />
+        )}
+
+        {question.type === 'picture-match' && (
+          <PictureMatchCard
+            key={currentIndex}
+            question={question}
+            levelColor={level.color}
+            selectedOption={selectedOption}
+            isAnswered={isAnswered}
+            onSelect={handleSelectOption}
+          />
+        )}
+
+        {!['multiple-choice', 'picture-match'].includes(question.type) && (
+          <div className="rounded p-6 text-center" style={{ background: level.color.bg, border: `2px solid ${level.color.border}` }}>
+            <p className="text-sm" style={{ color: level.color.sub }}>
+              {question.type} card
+            </p>
+          </div>
+        )}
 
       </div>
     </div>
