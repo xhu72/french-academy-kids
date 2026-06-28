@@ -5,6 +5,9 @@ import questions from '../data/questions.json'
 import { shuffleArray } from '../utils/shuffle'
 import MultipleChoiceCard from '../components/MultipleChoiceCard'
 import PictureMatchCard   from '../components/PictureMatchCard'
+import SentenceQuizCard    from '../components/SentenceQuizCard'
+import TranslationQuizCard from '../components/TranslationQuizCard'
+import FillInBlank from '../components/FillInBlank'
 
 export default function QuizPage() {
   const { levelId, topic } = useParams()
@@ -58,7 +61,7 @@ export default function QuizPage() {
     handleAnswer(isCorrect, pointsEarned)
   }
 
-  function handleAnswer(isCorrect, pointsEarned) {
+  function recordAnswer(isCorrect, pointsEarned) {
     setAnswers(prev => [...prev, {
       questionId: question.id,
       isCorrect,
@@ -66,23 +69,36 @@ export default function QuizPage() {
     }])
     setScore(s => s + pointsEarned)
     setMaxScore(m => m + question.points)
+  }
+
+  function advanceQuestion(finalScore, finalMax) {
+    if (isLast) {
+      navigate(`/results/${levelId}/${encodeURIComponent(topicName)}`, {
+        state: {
+          score: finalScore,
+          maxScore: finalMax,
+          total,
+          topicName,
+        },
+      })
+    } else {
+      setCurrentIndex(i => i + 1)
+    }
+  }
+
+  function handleAnswer(isCorrect, pointsEarned) {
+    recordAnswer(isCorrect, pointsEarned)
 
     const finalScore = score + pointsEarned
     const finalMax = maxScore + question.points
-    setTimeout(() => {
-      if (isLast) {
-        navigate(`/results/${levelId}/${encodeURIComponent(topicName)}`, {
-          state: {
-            score: finalScore,
-            maxScore: finalMax,
-            total,
-            topicName,
-          },
-        })
-      } else {
-        setCurrentIndex(i => i + 1)
-      }
-    }, 2000)
+    setTimeout(() => advanceQuestion(finalScore, finalMax), 2000)
+  }
+
+  function handleFillInBlankNext(isCorrect) {
+    const pointsEarned = isCorrect ? question.points : 0
+    setIsAnswered(true)
+    recordAnswer(isCorrect, pointsEarned)
+    advanceQuestion(score + pointsEarned, maxScore + question.points)
   }
 
   return (
@@ -128,8 +144,42 @@ export default function QuizPage() {
             onSelect={handleSelectOption}
           />
         )}
+        
+        {question.type === 'sentence-build' && (
+          <SentenceQuizCard
+            key={currentIndex}
+            question={question}
+            levelColor={level.color}
+            isAnswered={isAnswered}
+            onSubmit={(isCorrect, pointsEarned) => {
+              setIsAnswered(true)
+              handleAnswer(isCorrect, pointsEarned)
+            }}
+          />
+        )}
 
-        {!['multiple-choice', 'picture-match'].includes(question.type) && (
+        {question.type === 'translation' && (
+          <TranslationQuizCard
+            key={currentIndex}
+            question={question}
+            levelColor={level.color}
+            isAnswered={isAnswered}
+            onSubmit={(isCorrect, pointsEarned) => {
+              setIsAnswered(true)
+              handleAnswer(isCorrect, pointsEarned)
+            }}
+          />
+        )}
+        {question.type === 'fill-in-blank' && (
+          <FillInBlank
+            key={currentIndex}
+            question={question}
+            level={level}
+            onNext={handleFillInBlankNext}
+          />
+        )}
+
+        {!['multiple-choice', 'picture-match', 'sentence-build', 'translation', 'fill-in-blank'].includes(question.type) && (
           <div className="rounded p-6 text-center" style={{ background: level.color.bg, border: `2px solid ${level.color.border}` }}>
             <p className="text-sm" style={{ color: level.color.sub }}>
               {question.type} card

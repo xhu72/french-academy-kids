@@ -39,7 +39,7 @@ export default function FillInBlank({ question, level, onNext }) {
     if (isAnswered) return
     setSelectedOption(option)
     setIsAnswered(true)
-    setTimeout(() => onNext(), 2000)
+    setTimeout(() => onNext(option === question.answer), 2000)
   }
 
   return (
