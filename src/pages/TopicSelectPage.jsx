@@ -37,7 +37,6 @@ export default function TopicSelectPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <p className="text-2xl mb-4">🤔</p>
           <p className="text-gray-500">Level not found.</p>
           <button
             onClick={() => navigate('/home')}
