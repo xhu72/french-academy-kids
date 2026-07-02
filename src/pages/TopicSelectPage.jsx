@@ -126,6 +126,8 @@ export default function TopicSelectPage() {
                   isDone={isDone}
                   score={topicScore}
                   color={color}
+                  levelId={levelId}      
+                  navigate={navigate}
                   onClick={() => navigate(`/lesson/${levelId}/${encodeURIComponent(topic)}`)}
                 />
               )
