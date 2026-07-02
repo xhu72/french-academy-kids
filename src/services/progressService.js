@@ -17,8 +17,8 @@ export async function getUserDoc(uid) {
   return snap.exists() ? snap.data() : null
 }
 
-export async function saveQuizResult(uid, topic, result) {
-  const progressRef = doc(db, 'users', uid, 'progress', topic)
+export async function saveQuizResult(uid, levelId, topic, result) {
+  const progressRef = doc(db, 'users', uid, 'progress', `${levelId}_${topic}`)
   const existing = await getDoc(progressRef)
 
   const bestPercentage = existing.exists()

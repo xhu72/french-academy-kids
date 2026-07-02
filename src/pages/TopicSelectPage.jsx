@@ -100,7 +100,7 @@ export default function TopicSelectPage() {
           <h2 className="text-2xl font-bold">Choose a topic</h2>
           {!loading && (
             <p className="text-gray-500">
-              {level.topics.filter(t => (progress[t]?.percentage ?? 0) >= level.passMark).length}
+              {level.topics.filter(t => (progress[`${level.id}_${t}`]?.percentage ?? 0) >= level.passMark).length}
               {' '}of {level.topics.length} topics completed
             </p>
           )}
@@ -115,7 +115,7 @@ export default function TopicSelectPage() {
                 q => q.level === level.id && q.topic === topic
               )
               const wordCount  = topicQuestions.length
-              const topicScore = progress[topic]?.percentage ?? 0
+              const topicScore = progress[`${level.id}_${topic}`]?.percentage ?? 0
               const isDone     = topicScore >= level.passMark
 
               return (

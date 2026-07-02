@@ -24,13 +24,13 @@ export default function ResultsPage() {
 
     async function saveAndCheck() {
       // 1 — save this topic's result
-      await saveQuizResult(user.uid, topicName, { score, maxScore, percentage })
+      await saveQuizResult(user.uid, level.id, topicName, { score, maxScore, percentage })
 
       // 2 — reload all progress and check if every topic now meets the pass mark
       const allProgress = await getUserProgress(user.uid)
 
       const allTopicsPassed = level.topics.every(t => {
-        const topicProgress = allProgress[t]
+        const topicProgress = allProgress[`${level.id}_${t}`]
         return topicProgress && topicProgress.bestPercentage >= level.passMark
       })
 
