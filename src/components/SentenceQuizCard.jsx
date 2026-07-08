@@ -1,19 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { shuffleArray } from '../utils/shuffle'
 import WordTile from './WordTile'
 
 export default function SentenceQuizCard({question, levelColor, isAnswered, onSubmit}) {
-  const [shuffledWords, setShuffledWords] = useState([])
+  const [shuffledWords] = useState(() => shuffleArray(question.words))
   const [placedWords, setPlacedWords] = useState([])
-  const [feedback, setFeedback] = useState(null) // null | { isCorrect }
+  const [feedback, setFeedback] = useState(null)
   const [attempts, setAttempts] = useState(0)
-
-  useEffect(() => {
-    setShuffledWords(shuffleArray(question.words))
-    setPlacedWords([])
-    setFeedback(null)
-    setAttempts(0)
-  }, [question])
 
   const placedIndexes = placedWords.map(p => p.index)
   const builtSentence  = placedWords.map(p => p.word)
