@@ -5,7 +5,7 @@ import { auth } from '../firebaseConfig'
 import { useAuth } from '../context/AuthContext'
 import { LEVELS } from '../data/levels'
 import LevelCard from '../components/LevelCard'
-import { getUserDoc, getUserProgress, saveQuizResult } from '../services/progressService'
+import { getUserDoc, getUserProgress, resetProgress } from '../services/progressService'
 
 export default function HomePage() {
   const { user } = useAuth()
@@ -30,10 +30,11 @@ export default function HomePage() {
     load()
   }, [user])
 
-  useEffect(() => {
-    if (!user) return
-    window.testSave = () => saveQuizResult(user.uid, 'Animals', { score: 80, maxScore: 100, percentage: 80 })
-  }, [user])
+  async function handleReset() {
+    if (!window.confirm('Reset all progress and start from the beginning?')) return
+    await resetProgress(user.uid)
+    window.location.reload()
+  }
 
   async function handleSignOut() {
     await signOut(auth)
@@ -62,21 +63,26 @@ export default function HomePage() {
           <span className="text-2xl">🇫🇷</span>
           <span className="font-bold">French Academy Kids</span>
         </div>
-        <button onClick={handleSignOut} className="text-sm text-gray-500">
-          Sign out
-        </button>
+        <div className="flex items-center gap-4">
+          <button onClick={handleReset} className="text-sm text-gray-400">
+            Reset progress
+          </button>
+          <button onClick={handleSignOut} className="text-sm text-gray-500">
+            Sign out
+          </button>
+        </div>
       </nav>
 
       <main className="max-w-2xl mx-auto px-6 py-8">
 
         <div className="mb-6">
           <h1 className="text-2xl font-bold">
-            Bonjour, {displayName.split(' ')[0]}! 👋
+            Bonjour, {displayName.split(' ')[0]}!
           </h1>
           <p className="text-gray-500">
             {unlockedLevels.length === 1
               ? 'Complete Level 1 topics to unlock the next level.'
-              : `You have unlocked ${unlockedLevels.length} levels — keep going!`}
+              : `You have unlocked ${unlockedLevels.length} levels - keep going!`}
           </p>
         </div>
 
@@ -101,7 +107,7 @@ export default function HomePage() {
 
             // Which topics have been completed for this level?
             const completedTopics = level.topics.filter(
-              topic => progress[topic]?.percentage >= level.passMark
+              topic => progress[`${level.id}_${topic}`]?.percentage >= level.passMark
             )
 
             return (

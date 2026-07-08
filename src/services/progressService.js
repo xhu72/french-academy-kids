@@ -1,5 +1,5 @@
 import {
-  doc, getDoc, setDoc, updateDoc,
+  doc, getDoc, setDoc, updateDoc, deleteDoc,
   collection, getDocs,
   increment, arrayUnion, serverTimestamp,
 } from 'firebase/firestore'
@@ -45,4 +45,17 @@ export async function unlockNextLevel(uid, levelId) {
   await updateDoc(doc(db, 'users', uid), {
     unlockedLevels: arrayUnion(nextLevel),
   })
+}
+
+export async function resetProgress(uid) {
+  const snap = await getDocs(collection(db, 'users', uid, 'progress'));
+
+  for (const d of snap.docs) {
+    await deleteDoc(d.ref);
+  }
+
+  await updateDoc(doc(db, 'users', uid), {
+    unlockedLevels: [1],
+    totalXP: 0,
+  });
 }
