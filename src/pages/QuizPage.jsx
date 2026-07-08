@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { LEVELS } from '../data/levels'
 import questions from '../data/questions.json'
@@ -19,13 +19,8 @@ export default function QuizPage() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [score, setScore] = useState(0)
   const [maxScore, setMaxScore] = useState(0)
-  const [answers, setAnswers] = useState([])
   const [selectedOption, setSelectedOption] = useState(null)
-  const [isAnswered, setIsAnswered]         = useState(false)
-  useEffect(() => {
-    setSelectedOption(null)
-    setIsAnswered(false)
-  }, [currentIndex])
+  const [isAnswered, setIsAnswered] = useState(false)
 
   const filtered = questions.filter(
     q => q.level === Number(levelId) && q.topic === topicName
@@ -62,11 +57,6 @@ export default function QuizPage() {
   }
 
   function recordAnswer(isCorrect, pointsEarned) {
-    setAnswers(prev => [...prev, {
-      questionId: question.id,
-      isCorrect,
-      pointsEarned,
-    }])
     setScore(s => s + pointsEarned)
     setMaxScore(m => m + question.points)
   }
@@ -82,6 +72,8 @@ export default function QuizPage() {
         },
       })
     } else {
+      setSelectedOption(null)
+      setIsAnswered(false)
       setCurrentIndex(i => i + 1)
     }
   }
