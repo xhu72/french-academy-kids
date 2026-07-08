@@ -25,24 +25,27 @@ export default function SentenceBuilderPage() {
   const question = sentenceQuestions[currentIndex]
 
   useEffect(() => {
-    if (!question) return
-    setShuffledWords(shuffleArray(question.words))
-    setPlacedWords([])
-    setShowHint(false)
-    setAttempts(0)
-    setLocked(false)
-  }, [currentIndex, question])
-
-  useEffect(() => {
     if (!feedback.show) return
     const timer = setTimeout(() => {
       setFeedback(f => ({ ...f, show: false }))
       if (feedback.isCorrect) {
-        if (currentIndex === total - 1) navigate(`/level/${levelId}`)
-        else setCurrentIndex(i => i + 1)
+        if (currentIndex === total - 1) {
+          navigate(`/level/${levelId}`)
+        } else {
+          const next = sentenceQuestions[currentIndex + 1]
+          if (next) {
+            setShuffledWords(shuffleArray(next.words))
+            setPlacedWords([])
+            setShowHint(false)
+            setAttempts(0)
+            setLocked(false)
+          }
+          setCurrentIndex(i => i + 1)
+        }
       }
     }, 2000)
     return () => clearTimeout(timer)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [feedback.show, feedback.isCorrect, currentIndex, total, levelId, navigate])
 
   if (!level || total === 0) {
