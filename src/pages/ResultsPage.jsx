@@ -135,12 +135,6 @@ export default function ResultsPage() {
             Back to topics
           </button>
 
-          <button
-            onClick={() => navigate('/home')}
-            className="w-full py-3 text-sm text-gray-400"
-          >
-            Back to home
-          </button>
         </div>
 
       </main>

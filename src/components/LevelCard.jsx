@@ -20,7 +20,7 @@ export default function LevelCard({ level, isUnlocked, completedTopics, onClick 
       )}
 
       <h2 className="font-bold mb-1">
-        Level {level.id} — {level.name}
+        Level {level.id} - {level.name}
       </h2>
       <p className="text-sm mb-2 text-gray-600">
         {level.grades} · {level.points}
